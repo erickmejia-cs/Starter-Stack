@@ -37,16 +37,22 @@ if (!!customHostBaseUrl && isValidCustomHostUrl(customHostBaseUrl)) {
   Stack.setHost(customHostBaseUrl);
 }
 
-// Setting LP if enabled
 ContentstackLivePreview.init({
-  //@ts-ignore
+  enable: true,
+  ssr: false,
+  mode: 'builder',
   stackSdk: Stack,
-  mode: "builder",
-  clientUrlParams:{
+  clientUrlParams: {
+    protocol: "https",
     host: envConfig.CONTENTSTACK_APP_HOST,
+    port: 443,
   },
-  ssr:false,
-})?.catch((err) => console.error(err));
+  stackDetails: {
+    apiKey: envConfig.CONTENTSTACK_API_KEY,
+    environment: envConfig.CONTENTSTACK_ENVIRONMENT,
+    branch: envConfig.CONTENTSTACK_BRANCH ? process.env.CONTENTSTACK_BRANCH : 'main'
+},
+});
 
 export const { onEntryChange } = ContentstackLivePreview;
 
